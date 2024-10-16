@@ -1,20 +1,20 @@
 {
-  "packageManager": "yarn@4.5.0",
   "name": "epicfy-backend",
   "version": "1.0.0",
   "description": "Backend from application that improve solutions around the world. ",
   "main": "index.ts",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "dev": ""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cristianprochnow/epicfy-backend.git"
+    "url": "git+https://github.com/SpotifaiI/epicfy-backend.git"
   },
   "author": "Spotifail",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cristianprochnow/epicfy-backend/issues"
+    "url": "https://github.com/SpotifaiI/epicfy-backend/issues"
   },
-  "homepage": "https://github.com/cristianprochnow/epicfy-backend#readme"
+  "homepage": "https://github.com/SpotifaiI/epicfy-backend#readme"
 }
