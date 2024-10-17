@@ -1,6 +1,4 @@
-import { Knex } from "knex";
-
-export const config: Knex.Config = {
+module.exports = {
   client: "mysql2",
   connection: {
     host: process.env.DB_HOST,
@@ -10,6 +8,6 @@ export const config: Knex.Config = {
     database: process.env.DB_DATABASE,
   },
   migrations: {
-    directory: "./src/db/migrations"
+    directory: "./migrations"
   }
 };
