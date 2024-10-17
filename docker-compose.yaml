@@ -1,4 +1,17 @@
 services:
+  epicfy_storage:
+    image: mysql:5.7
+    container_name: epicfy_storage
+    ports:
+      - ${DB_PORT}:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./src/config/migrations/:/docker-entrypoint-initdb.d/
+    env_file: .env
+    restart: always
+
   epicfy_backend:
     image: node:20-alpine
     container_name: epicfy_backend

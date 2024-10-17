@@ -1,1 +1,3 @@
-console.log('shjow');
+import dotenv from 'dotenv';
+
+dotenv.config();
