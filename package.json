@@ -2,10 +2,12 @@
   "name": "epicfy-backend",
   "version": "1.0.0",
   "description": "Backend from application that improve solutions around the world. ",
-  "main": "index.ts",
+  "main": "src/server.ts",
   "scripts": {
     "test": "jest",
-    "dev": ""
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,16 @@
   "bugs": {
     "url": "https://github.com/SpotifaiI/epicfy-backend/issues"
   },
-  "homepage": "https://github.com/SpotifaiI/epicfy-backend#readme"
+  "homepage": "https://github.com/SpotifaiI/epicfy-backend#readme",
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.6",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
 }
