@@ -1,6 +1,25 @@
 import dotenv from 'dotenv';
 import { app } from './app';
+import { db } from './config/db';
 
-dotenv.config();
+(async function start() {
+  dotenv.config();
 
-app.listen(3000);
+  let isAbleToConnect = false;
+
+  while (!isAbleToConnect) {
+    try {
+      await db.raw("SELECT 1+1 AS result")
+
+      isAbleToConnect = true;
+    } catch (error) {
+      isAbleToConnect = false;
+    }
+  }
+
+  await db.raw('CREATE DATABASE IF NOT EXISTS epicfy');
+  await db.raw('USE epicfy');
+  await db.migrate.latest();
+
+  app.listen(3000);
+})();
