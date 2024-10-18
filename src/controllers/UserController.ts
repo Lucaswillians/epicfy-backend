@@ -8,4 +8,6 @@ export class UserController {
   async show(req: Request, res: Response): Promise<void> {}
 
   async delete(req: Request, res: Response): Promise<void> {}
+
+  async login(req: Request, res: Response): Promise<void> {}
 }
