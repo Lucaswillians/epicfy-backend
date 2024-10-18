@@ -1,11 +1,8 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+import { commentRoutes } from './routes/commentRoutes';
 
 const routes = Router();
 
-routes.get('/', (req: Request, res: Response) => {
-  res.send({
-    success: true
-  });
-})
+routes.use('/comment', commentRoutes);
 
 export { routes };
