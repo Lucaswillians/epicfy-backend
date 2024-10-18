@@ -23,3 +23,5 @@ services:
     env_file: .env
     command: sh -c "yarn && yarn dev"
     tty: true
+    depends_on:
+      - epicfy_storage
