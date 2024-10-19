@@ -1,6 +1,8 @@
+import { genSalt } from 'bcrypt';
 import { User } from '../models/User';
-import { UserAddBody } from '../types/user';
+import { UserAddBody, UserAddData } from '../types/user';
 import { ValidatorUtils } from '../utils/ValidatorUtils';
+import { CryptoUtils } from '../utils/CryptoUtils';
 
 export class UserDomain {
   private user: User;
@@ -12,14 +14,14 @@ export class UserDomain {
   /**
    * @throws Error
    */
-  async add(user: UserAddBody) {
-    // To ensure `is_company` is a boolean item.
-    user.is_company = !!user.is_company;
+  async add(user: UserAddData) {
+    user.password = await CryptoUtils.hash(user.password);
 
     const addedIds = await this.user.add({
-      email: user.email as string,
+      email: user.email,
       is_company: user.is_company,
-      username: user.username as string,
+      username: user.username,
+      password: user.password
     });
 
     if (!addedIds[0]) {
@@ -34,11 +36,16 @@ export class UserDomain {
    */
   checkData(user: UserAddBody) {
     const {
-      email, is_company, username
+      email,
+      is_company,
+      username,
+      password
     } = user;
 
-    if (!ValidatorUtils.hasRequiredData([email, is_company, username])) {
-      throw new Error('Parâmetros [email, is_company, username] são obrigatórios');
+    if (!ValidatorUtils.hasRequiredData([
+      email, is_company, username, password
+    ])) {
+      throw new Error('Parâmetros [email, is_company, username, password] são obrigatórios');
     }
   }
 

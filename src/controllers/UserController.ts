@@ -16,6 +16,10 @@ export class UserController {
     let code = HttpUtils.SUCCESS;
 
     try {
+      if (req.body) {
+        req.body.is_company = !!req.body.is_company;
+      }
+
       const bodyData = req.body as UserAddBody;
 
       this.userDomain.checkData(req.body);
@@ -23,7 +27,8 @@ export class UserController {
       const userData: UserAddData = {
         email: bodyData.email || '',
         username: bodyData.username || '',
-        is_company: bodyData.is_company || false
+        is_company: (bodyData.is_company || false),
+        password: bodyData.password || ''
       };
 
       this.userDomain.validateEmail(userData.email);
