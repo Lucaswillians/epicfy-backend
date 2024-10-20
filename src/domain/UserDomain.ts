@@ -1,6 +1,5 @@
-import { genSalt } from 'bcrypt';
 import { User } from '../models/User';
-import { UserAddBody, UserAddData } from '../types/user';
+import { UserAddBody, UserAddData, UserRow } from '../types/user';
 import { ValidatorUtils } from '../utils/ValidatorUtils';
 import { CryptoUtils } from '../utils/CryptoUtils';
 
@@ -77,5 +76,26 @@ export class UserDomain {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+(\.[^\s@]+)*$/;
 
     return emailRegex.test(email);
+  }
+
+  /**
+   * @throws Error
+   */
+  public checkId(id: any): number {
+    if (!id) {
+      throw new Error('Código do usuário é obrigatório na URL (/user/:id)');
+    }
+
+    const userId = parseInt(id);
+
+    if (isNaN(userId)) {
+      throw new Error('Código do usuário é inválido');
+    }
+
+    return userId;
+  }
+
+  public async getById(id: number): Promise<UserRow | null> {
+    return this.user.get(id);
   }
 }

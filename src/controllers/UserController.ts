@@ -49,9 +49,29 @@ export class UserController {
     }
   }
 
-  async update(req: Request, res: Response) {}
+  async show(req: Request, res: Response) {
+    let content = {};
+    let code = HttpUtils.SUCCESS;
 
-  async show(req: Request, res: Response) {}
+    try {
+      const userId = this.userDomain.checkId(req.params.id);
+      const user = await this.userDomain.getById(userId);
+
+      content = ControllerUtils.success({ user });
+    } catch (exception) {
+      code = HttpUtils.ERROR;
+
+      if (exception instanceof Error) {
+        content = ControllerUtils.error(exception.message);
+      } else {
+        content = ControllerUtils.error(`${exception}`);
+      }
+    } finally {
+      res.status(code).send(content)
+    }
+  }
+
+  async update(req: Request, res: Response) {}
 
   async delete(req: Request, res: Response) {}
 

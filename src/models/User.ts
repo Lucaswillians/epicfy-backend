@@ -29,4 +29,13 @@ export class User {
 
     return id;
   }
+
+  async get(userId: number): Promise<UserRow | null> {
+    const user = await this.db<UserRow>('user')
+      .select('*')
+      .where('id', userId)
+      .first();
+
+    return user || null;
+  }
 }
