@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import {
   UserAddBody,
-  UserAddData,
+  UserAddData, UserLoginBody, UserLoginData,
   UserUpdateBody,
   UserUpdateData
 } from '../types/user';
@@ -129,5 +129,37 @@ export class UserController {
     }
   }
 
-  async login(req: Request, res: Response) {}
+  async login(req: Request, res: Response) {
+    let content = {};
+    let code = HttpUtils.SUCCESS;
+
+    try {
+      const bodyData = req.body as UserLoginBody;
+
+      this.userDomain.checkDataLogin(bodyData);
+
+      const userData: UserLoginData = {
+        email: bodyData.email || '',
+        password: bodyData.password || ''
+      };
+
+      this.userDomain.validateEmail(userData.email);
+      const user = await this.userDomain.byEmail(userData.email);
+      await this.userDomain.checkSignup(userData.password, user);
+
+      const token = await this.userDomain.buildLoginToken(user);
+
+      content = ControllerUtils.success({ token, user: user.id });
+    } catch (exception) {
+      code = HttpUtils.ERROR;
+
+      if (exception instanceof Error) {
+        content = ControllerUtils.error(exception.message);
+      } else {
+        content = ControllerUtils.error(`${exception}`);
+      }
+    } finally {
+      res.status(code).send(content)
+    }
+  }
 }

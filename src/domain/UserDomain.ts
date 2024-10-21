@@ -1,7 +1,7 @@
 import { User } from '../models/User';
 import {
   UserAddBody,
-  UserAddData,
+  UserAddData, UserLoginBody,
   UserRow, UserUpdateBody,
   UserUpdateData
 } from '../types/user';
@@ -76,6 +76,27 @@ export class UserDomain {
 
     if (!hasRequiredData || !hasRequiredValues) {
       throw new Error('Parâmetros [username, password] são obrigatórios');
+    }
+  }
+
+  /**
+   * @throws Error
+   */
+  checkDataLogin(user: UserLoginBody) {
+    const {
+      email,
+      password
+    } = user;
+
+    const hasRequiredData = ValidatorUtils.hasRequiredData([
+      email, password
+    ]);
+    const hasRequiredValues = ValidatorUtils.hasRequiredValues([
+      email, password
+    ]);
+
+    if (!hasRequiredData || !hasRequiredValues) {
+      throw new Error('Parâmetros [email, password] são obrigatórios');
     }
   }
 
@@ -181,5 +202,37 @@ export class UserDomain {
     }
 
     return updateId;
+  }
+
+  /**
+   * @throws Error
+   */
+  public async byEmail(email: string): Promise<UserRow> {
+    const user = await this.user.getInfoByEmail(email);
+
+    if (!user) {
+      throw new Error('Usuário não cadastrado');
+    }
+
+    return user;
+  }
+
+  /**
+   * @throws Error
+   */
+  public async checkSignup(password: string, user: UserRow): Promise<boolean> {
+    const isCorrect = await CryptoUtils.equal(password, user.password);
+
+    if (!isCorrect) {
+      throw new Error('Usuário ou senha incorretos');
+    }
+
+    return isCorrect;
+  }
+
+  public async buildLoginToken(user: UserRow): Promise<string> {
+    const key = `${user.id}_${user.email}_${user.created_at}`;
+
+    return CryptoUtils.hash(key);
   }
 }

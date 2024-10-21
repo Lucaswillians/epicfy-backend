@@ -30,6 +30,15 @@ export class User {
     return id;
   }
 
+  async getInfoByEmail(email: string): Promise<UserRow | null> {
+    const user = await this.db<UserRow>('user')
+      .select('*')
+      .where('email', email)
+      .first();
+
+    return user || null;
+  }
+
   async get(userId: number): Promise<UserRow | null> {
     const user = await this.db<UserRow>('user')
       .select('*')

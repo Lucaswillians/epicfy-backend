@@ -34,3 +34,13 @@ export interface UserUpdateData {
 }
 
 export interface UserUpdateRow extends UserUpdateData {}
+
+export interface UserLoginBody {
+  email?: string;
+  password?: string;
+}
+
+export interface UserLoginData {
+  email: string;
+  password: string;
+}
