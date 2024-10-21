@@ -2,7 +2,8 @@ import knex, { Knex } from 'knex';
 import { db } from '../config/db';
 import {
   UserInsertRow,
-  UserRow, UserUpdateRow
+  UserRow,
+  UserUpdateRow
 } from '../types/user';
 
 export class User {
@@ -10,6 +11,10 @@ export class User {
 
   constructor() {
     this.db = db;
+  }
+
+  public switch(altDb: Knex): void {
+    this.db = altDb;
   }
 
   async add(user: UserInsertRow) {

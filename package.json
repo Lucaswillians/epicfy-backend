@@ -4,7 +4,7 @@
   "description": "Backend from application that improve solutions around the world. ",
   "main": "src/server.ts",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts",

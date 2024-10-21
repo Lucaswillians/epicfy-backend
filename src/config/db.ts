@@ -1,3 +1,5 @@
 import knex from 'knex';
 
-export const db = knex(require('../../knexfile').development);
+const knexConfig = require('../../knexfile');
+export const db = knex(knexConfig.development);
+export const testDb = knex(knexConfig.tests);

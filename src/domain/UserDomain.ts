@@ -15,6 +15,10 @@ export class UserDomain {
     this.user = new User();
   }
 
+  public model(): User {
+    return this.user;
+  }
+
   /**
    * @throws Error
    */
