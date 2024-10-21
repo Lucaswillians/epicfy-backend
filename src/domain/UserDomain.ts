@@ -163,4 +163,23 @@ export class UserDomain {
 
     return updateId;
   }
+
+  /**
+   * @throws Error
+   */
+  async unset(id: number) {
+    const userExists = await this.getById(id);
+
+    if (!userExists) {
+      throw new Error(`Usuário com o código ${id} é inexistente`);
+    }
+
+    const updateId = await this.user.remove(id);
+
+    if (!updateId) {
+      throw new Error("Ocorreu um erro e não foi possível remover o usuário");
+    }
+
+    return updateId;
+  }
 }

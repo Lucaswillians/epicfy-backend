@@ -44,4 +44,8 @@ export class User {
       .where('id', id)
       .update(user);
   }
+
+  public async remove(id: number): Promise<number> {
+    return this.db('user').where('id', id).del();
+  }
 }

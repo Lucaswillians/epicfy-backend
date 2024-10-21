@@ -107,7 +107,27 @@ export class UserController {
     }
   }
 
-  async delete(req: Request, res: Response) {}
+  async delete(req: Request, res: Response) {
+    let content = {};
+    let code = HttpUtils.SUCCESS;
+
+    try {
+      const userId = this.userDomain.checkId(req.params.id);
+      await this.userDomain.unset(userId);
+
+      content = ControllerUtils.success({ user: userId });
+    } catch (exception) {
+      code = HttpUtils.ERROR;
+
+      if (exception instanceof Error) {
+        content = ControllerUtils.error(exception.message);
+      } else {
+        content = ControllerUtils.error(`${exception}`);
+      }
+    } finally {
+      res.status(code).send(content)
+    }
+  }
 
   async login(req: Request, res: Response) {}
 }
