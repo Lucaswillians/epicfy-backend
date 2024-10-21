@@ -189,10 +189,13 @@ describe('Domain', () => {
     expect(() => user.validateEmail('test@test.com.br')).not.toThrow(Error);
   });
 
-  it('should check not registered e-mail',  () => {
+  it('should check not registered e-mail', async () => {
+    await testDb.migrate.latest();
     const user = new UserDomain();
 
-    expect(() => user.checkEmail('test@test.com.br')).not.toThrow(Error);
+    user.model().switch(testDb);
+
+    expect(async () => await user.checkEmail('test@test.com.br')).not.toThrow(Error);
   });
 
   it('should check registered e-mail',  async () => {
@@ -211,6 +214,6 @@ describe('Domain', () => {
       username: 'test_1'
     });
 
-    expect(() => userDomain.checkEmail('test@test.com.br')).toThrow(Error);
+    expect(async () => await userDomain.checkEmail('test@test.com.br')).toThrow(Error);
   });
 })
