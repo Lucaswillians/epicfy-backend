@@ -60,6 +60,6 @@ export class User {
   }
 
   public async remove(id: number): Promise<number> {
-    return this.db('user').where('id', id).del();
+    return this.db('user').where('id', id).del() as Promise<number>;
   }
 }
