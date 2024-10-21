@@ -187,4 +187,127 @@ describe('Domain', () => {
 
     expect(() => user.validateEmail('test@test.com.br')).not.toThrow(Error);
   });
+
+  it('should check correct e-mail format',  () => {
+    const user = new UserDomain();
+
+    expect(user.isValidEmail('test@test.com.br')).toBeTruthy();
+  });
+
+  it('should check wrong e-mail format',  () => {
+    const user = new UserDomain();
+
+    expect(user.isValidEmail('test@test')).toBeFalsy();
+  });
+
+  it('should check wrong id format',  () => {
+    const user = new UserDomain();
+
+    expect(() => user.checkId('test')).toThrow(Error);
+  });
+
+  it('should check correct string id format',  () => {
+    const user = new UserDomain();
+
+    expect(() => user.checkId('1')).not.toThrow(Error);
+  });
+
+  it('should check correct int id format',  () => {
+    const user = new UserDomain();
+
+    expect(() => user.checkId(1)).not.toThrow(Error);
+  });
+
+  it('should update a User', async () => {
+    await testDb.migrate.latest();
+    const user = new UserDomain();
+    const afterUser = 'test_9_show'
+
+    user.model().switch(testDb);
+
+    const testUpdate = await user.add({
+      email: 'test_7@test_7.com',
+      password: 'test_1',
+      is_company: false,
+      username: 'test_7'
+    });
+    await user.update(testUpdate, {
+      password: '',
+      username: afterUser
+    });
+    const userUpdated = await user.getById(testUpdate);
+
+    expect(userUpdated?.username).toEqual(afterUser);
+  });
+
+  it('should remove a User', async () => {
+    await testDb.migrate.latest();
+    const user = new UserDomain();
+
+    user.model().switch(testDb);
+
+    const testUpdate = await user.add({
+      email: 'test_7@test_7.com',
+      password: 'test_1',
+      is_company: false,
+      username: 'test_7'
+    });
+    await user.unset(testUpdate);
+    const userUpdated = await user.getById(testUpdate);
+
+    expect(userUpdated).toBeNull();
+  });
+
+  it('should query a User', async () => {
+    await testDb.migrate.latest();
+    const user = new UserDomain();
+
+    user.model().switch(testDb);
+
+    await user.add({
+      email: 'test_7@test_7.com',
+      password: 'test_1',
+      is_company: false,
+      username: 'test_7'
+    });
+    const created = await user.byEmail('test_7@test_7.com');
+
+    expect(created).not.toBeNull();
+  });
+
+  it('should login a User', async () => {
+    await testDb.migrate.latest();
+    const user = new UserDomain();
+
+    user.model().switch(testDb);
+
+    await user.add({
+      email: 'test_7@test_7.com',
+      password: 'test_1',
+      is_company: false,
+      username: 'test_7'
+    });
+    const created = await user.byEmail('test_7@test_7.com');
+    const logged = await user.checkSignup('test_1', created);
+
+    expect(logged).toBeTruthy();
+  });
+
+  it('should build a login token', async () => {
+    await testDb.migrate.latest();
+    const user = new UserDomain();
+
+    user.model().switch(testDb);
+
+    await user.add({
+      email: 'test_7@test_7.com',
+      password: 'test_1',
+      is_company: false,
+      username: 'test_7'
+    });
+    const created = await user.byEmail('test_7@test_7.com');
+    const token = user.buildLoginToken(created);
+
+    expect(token).not.toEqual('');
+  });
 })

@@ -128,19 +128,6 @@ export class UserDomain {
     }
   }
 
-  async checkEmailCondition(email: string): Promise<boolean> {
-    let hasError = false;
-
-      try {
-        await this.checkEmail(email);
-        hasError = false;
-      } catch (exception) {
-        hasError = true;
-      }
-
-      return hasError;
-  }
-
   isValidEmail(email: string) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+(\.[^\s@]+)*$/;
 
