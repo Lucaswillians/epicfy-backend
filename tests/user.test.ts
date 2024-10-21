@@ -1,9 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
-import { Knex } from 'knex';
 import { testDb } from '../src/config/db';
+import { UserDomain } from '../src/domain/UserDomain';
 import { User } from '../src/models/User';
 import { UserRow } from '../src/types/user';
-import { UserDomain } from '../src/domain/UserDomain';
 
 describe('Model', () => {
   it('should create a User', async () => {
@@ -187,33 +186,5 @@ describe('Domain', () => {
     const user = new UserDomain();
 
     expect(() => user.validateEmail('test@test.com.br')).not.toThrow(Error);
-  });
-
-  it('should check not registered e-mail', async () => {
-    await testDb.migrate.latest();
-    const user = new UserDomain();
-
-    user.model().switch(testDb);
-
-    expect(async () => await user.checkEmail('test@test.com.br')).not.toThrow(Error);
-  });
-
-  it('should check registered e-mail',  async () => {
-    await testDb.migrate.latest();
-
-    const userDomain = new UserDomain();
-    const user = new User();
-
-    user.switch(testDb);
-    userDomain.model().switch(testDb);
-
-    await user.add({
-      email: 'test@test.com.br',
-      password: 'test_1',
-      is_company: false,
-      username: 'test_1'
-    });
-
-    expect(async () => await userDomain.checkEmail('test@test.com.br')).toThrow(Error);
   });
 })

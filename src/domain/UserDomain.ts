@@ -5,8 +5,8 @@ import {
   UserRow, UserUpdateBody,
   UserUpdateData
 } from '../types/user';
-import { ValidatorUtils } from '../utils/ValidatorUtils';
 import { CryptoUtils } from '../utils/CryptoUtils';
+import { ValidatorUtils } from '../utils/ValidatorUtils';
 
 export class UserDomain {
   private user: User;
@@ -126,6 +126,19 @@ export class UserDomain {
     if (user) {
       throw new Error('Usuário já existente');
     }
+  }
+
+  async checkEmailCondition(email: string): Promise<boolean> {
+    let hasError = false;
+
+      try {
+        await this.checkEmail(email);
+        hasError = false;
+      } catch (exception) {
+        hasError = true;
+      }
+
+      return hasError;
   }
 
   isValidEmail(email: string) {
