@@ -1,4 +1,4 @@
-import { genSalt, hash } from 'bcrypt';
+import { compare, genSalt, hash } from 'bcrypt';
 
 export class CryptoUtils {
   private static getSalt(): number {
@@ -28,5 +28,17 @@ export class CryptoUtils {
     }
 
     return hashed;
+  }
+
+  public static async equal(text: string, encrypted: string): Promise<boolean> {
+    let equal = false;
+
+    try {
+      equal = await compare(text, encrypted);
+    } catch (exception) {
+      throw new Error('Ocorreu um erro ao comparar o hash para a lib Bcrypt');
+    }
+
+    return equal;
   }
 }

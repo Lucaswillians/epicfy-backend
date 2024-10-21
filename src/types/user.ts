@@ -22,3 +22,15 @@ export interface UserRow {
 }
 
 export interface UserInsertRow extends UserAddData {}
+
+export interface UserUpdateBody {
+  username?: string;
+  password?: string;
+}
+
+export interface UserUpdateData {
+  username: string;
+  password: string;
+}
+
+export interface UserUpdateRow extends UserUpdateData {}

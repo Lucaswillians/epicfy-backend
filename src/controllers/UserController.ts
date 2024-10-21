@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
-import { UserAddBody, UserAddData } from '../types/user';
+import {
+  UserAddBody,
+  UserAddData,
+  UserUpdateBody,
+  UserUpdateData
+} from '../types/user';
 import { UserDomain } from '../domain/UserDomain';
 import { HttpUtils } from '../utils/HttpUtils';
 import { ControllerUtils } from '../utils/ControllerUtils';
@@ -22,7 +27,7 @@ export class UserController {
 
       const bodyData = req.body as UserAddBody;
 
-      this.userDomain.checkData(req.body);
+      this.userDomain.checkData(bodyData);
 
       const userData: UserAddData = {
         email: bodyData.email || '',
@@ -71,7 +76,36 @@ export class UserController {
     }
   }
 
-  async update(req: Request, res: Response) {}
+  async update(req: Request, res: Response) {
+    let content = {};
+    let code = HttpUtils.SUCCESS;
+
+    try {
+      const userId = this.userDomain.checkId(req.params.id);
+      const bodyData = req.body as UserUpdateBody;
+
+      this.userDomain.checkDataUpdate(bodyData);
+
+      const userData: UserUpdateData = {
+        username: bodyData.username || '',
+        password: bodyData.password || ''
+      };
+
+      const id = await this.userDomain.update(userId,userData);
+
+      content = ControllerUtils.success({ user: id });
+    } catch (exception) {
+      code = HttpUtils.ERROR;
+
+      if (exception instanceof Error) {
+        content = ControllerUtils.error(exception.message);
+      } else {
+        content = ControllerUtils.error(`${exception}`);
+      }
+    } finally {
+      res.status(code).send(content)
+    }
+  }
 
   async delete(req: Request, res: Response) {}
 

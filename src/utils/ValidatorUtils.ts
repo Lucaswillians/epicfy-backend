@@ -12,4 +12,18 @@ export class ValidatorUtils {
 
     return hasRequired;
   }
+
+  static hasRequiredValues(params: any[]): boolean {
+    let hasRequired = true;
+
+    for (let param in params) {
+      if (!params[param]) {
+        hasRequired = false;
+
+        break;
+      }
+    }
+
+    return hasRequired;
+  }
 }

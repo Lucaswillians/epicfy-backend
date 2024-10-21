@@ -2,7 +2,7 @@ import knex, { Knex } from 'knex';
 import { db } from '../config/db';
 import {
   UserInsertRow,
-  UserRow
+  UserRow, UserUpdateRow
 } from '../types/user';
 
 export class User {
@@ -37,5 +37,11 @@ export class User {
       .first();
 
     return user || null;
+  }
+
+  async update(id: number, user: UserUpdateRow) {
+    return this.db<UserUpdateRow>('user')
+      .where('id', id)
+      .update(user);
   }
 }
