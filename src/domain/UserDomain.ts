@@ -5,8 +5,8 @@ import {
   UserRow, UserUpdateBody,
   UserUpdateData
 } from '../types/user';
-import { ValidatorUtils } from '../utils/ValidatorUtils';
 import { CryptoUtils } from '../utils/CryptoUtils';
+import { ValidatorUtils } from '../utils/ValidatorUtils';
 
 export class UserDomain {
   private user: User;
