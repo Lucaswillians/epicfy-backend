@@ -3,6 +3,7 @@ import { Knex } from 'knex';
 import { testDb } from '../src/config/db';
 import { User } from '../src/models/User';
 import { UserRow } from '../src/types/user';
+import { UserDomain } from '../src/domain/UserDomain';
 
 describe('Model', () => {
   it('should create a User', async () => {
@@ -114,7 +115,102 @@ describe('Model', () => {
 });
 
 describe('Domain', () => {
-  it('adds 1 + 2 to equal 3', () => {
-    expect(1 + 2).toBe(3);
+  it('should create a User', async () => {
+    await testDb.migrate.latest();
+    const user = new UserDomain();
+
+    user.model().switch(testDb);
+
+    const testCreation = await user.add({
+      email: 'test_7@test_7.com',
+      password: 'test_1',
+      is_company: false,
+      username: 'test_7'
+    });
+
+    expect(testCreation).toBeGreaterThan(0);
+  });
+
+  it('should check undefined creation data', () => {
+    const user = new UserDomain();
+
+    expect(() => user.checkData({})).toThrow(Error);
+  });
+
+  it('should check empty creation data',  () => {
+    const user = new UserDomain();
+
+    expect(() => user.checkData({
+      email: '',
+      password: '',
+      username: ''
+    })).toThrow(Error);
+  });
+
+  it('should check undefined update data', () => {
+    const user = new UserDomain();
+
+    expect(() => user.checkDataUpdate({})).toThrow(Error);
+  });
+
+  it('should check empty update data',  () => {
+    const user = new UserDomain();
+
+    expect(() => user.checkDataUpdate({
+      password: '',
+      username: ''
+    })).toThrow(Error);
+  });
+
+  it('should check undefined login data', () => {
+    const user = new UserDomain();
+
+    expect(() => user.checkDataLogin({})).toThrow(Error);
+  });
+
+  it('should check empty login data',  () => {
+    const user = new UserDomain();
+
+    expect(() => user.checkDataLogin({
+      email: '',
+      password: '',
+    })).toThrow(Error);
+  });
+
+  it('should check wrong e-mail',  () => {
+    const user = new UserDomain();
+
+    expect(() => user.validateEmail('asdasdasd')).toThrow(Error);
+  });
+
+  it('should check correct e-mail',  () => {
+    const user = new UserDomain();
+
+    expect(() => user.validateEmail('test@test.com.br')).not.toThrow(Error);
+  });
+
+  it('should check not registered e-mail',  () => {
+    const user = new UserDomain();
+
+    expect(() => user.checkEmail('test@test.com.br')).not.toThrow(Error);
+  });
+
+  it('should check registered e-mail',  async () => {
+    await testDb.migrate.latest();
+
+    const userDomain = new UserDomain();
+    const user = new User();
+
+    user.switch(testDb);
+    userDomain.model().switch(testDb);
+
+    await user.add({
+      email: 'test@test.com.br',
+      password: 'test_1',
+      is_company: false,
+      username: 'test_1'
+    });
+
+    expect(() => userDomain.checkEmail('test@test.com.br')).toThrow(Error);
   });
 })
