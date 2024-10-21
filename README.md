@@ -9,8 +9,16 @@ Primeiro passo é preencher o arquivo `example.env` com as configurações que d
 
 ## Comandos
 
+### Iniciar Projeto
+
 ```shell
-$ docker compose up # Para iniciar os containers.
-$ docker exec -it epicfy_backend sh # Entrando no container da aplicação Node.
-$ yarn migrate:run # Rodar as migrations no banco de dados dentro do container.
+$ docker compose up
+```
+
+### Rodar os Testes
+
+```shell
+$ docker compose up
+$ docker exec -it epicfy_backend sh
+$ yarn test
 ```
