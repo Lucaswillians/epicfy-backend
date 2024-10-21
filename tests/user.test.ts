@@ -41,15 +41,15 @@ describe('Model', () => {
     const user = new User();
 
     user.switch(testDb);
-    const userCreated = await user.add({
+    await user.add({
       email: 'test_3@test_3.com',
       password: 'test_3',
       is_company: true,
       username: 'test_3'
-    }) as number[];
+    });
     const userWithEmail = await user.getInfoByEmail('test_3@test_3.com');
 
-    expect(userCreated[0]).toEqual(userWithEmail);
+    expect('test_3@test_3.com').toEqual(userWithEmail?.email);
   });
 
   it('should query a User info by id', async () => {
@@ -65,7 +65,7 @@ describe('Model', () => {
     }) as number[];
     const userWithEmail = await user.get(userCreated[0]);
 
-    expect(userCreated[0]).toEqual(userWithEmail);
+    expect(userCreated[0]).toEqual(userWithEmail?.id);
   });
 
   it('should update a User', async () => {

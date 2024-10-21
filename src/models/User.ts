@@ -25,6 +25,7 @@ export class User {
     const user = await this.db<UserRow>('user')
       .select('id')
       .where('email', email)
+      .orderBy('id', 'desc')
       .first();
     let id = null;
 
@@ -39,6 +40,7 @@ export class User {
     const user = await this.db<UserRow>('user')
       .select('*')
       .where('email', email)
+      .orderBy('id', 'desc')
       .first();
 
     return user || null;
