@@ -22,3 +22,7 @@ $ docker compose up
 $ docker exec -it epicfy_backend sh
 $ yarn test
 ```
+
+## Rotas
+
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Epicfy&uri=https%3A%2F%2Fgithub.com%2Fcristianprochnow%2Fepicfy-backend%2Fblob%2Fmain%2FInsomnia.json)
