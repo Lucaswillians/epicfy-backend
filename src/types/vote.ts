@@ -7,6 +7,7 @@ export interface voteEntity {
 }
 
 export interface voteData {
+  id?: number,
   user_id: number,
   idea_id: number,
   is_upvote?: boolean,

@@ -74,9 +74,7 @@ export class CommentService {
       .first()
 
     if (commentToDelete) {
-      await this.db('comment').where('id', id).del()
+     return await this.db('comment').where('id', id).del()
     }
-
-    return commentToDelete
   }
 }

@@ -1,3 +1,4 @@
+import { IdeaDomain } from './../domain/IdeaDomain';
 import { Request, Response } from 'express';
 import { ControllerUtils } from "../utils/ControllerUtils";
 import { HttpUtils } from "../utils/HttpUtils";
@@ -6,9 +7,11 @@ import { IdeaService } from '../services/IdeaService';
 
 export class IdeaController {
   private ideaService: IdeaService
+  private ideaDomain: IdeaDomain
 
   constructor() {
     this.ideaService = new IdeaService()
+    this.ideaDomain = new IdeaDomain()
   }
 
   async getAll(req: Request, res: Response): Promise<void> {
@@ -79,6 +82,7 @@ export class IdeaController {
 
     try {
       const bodyData = req.body as IdeaData
+      this.ideaDomain.checkDataUpdate(bodyData);
 
       const ideaData: IdeaData = {
         title: bodyData.title || '',
