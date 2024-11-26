@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
+import { UserDomain } from '../domain/UserDomain';
 import {
   UserAddBody,
   UserAddData, UserLoginBody, UserLoginData,
   UserUpdateBody,
   UserUpdateData
 } from '../types/user';
-import { UserDomain } from '../domain/UserDomain';
-import { HttpUtils } from '../utils/HttpUtils';
 import { ControllerUtils } from '../utils/ControllerUtils';
+import { HttpUtils } from '../utils/HttpUtils';
 
 export class UserController {
   private userDomain: UserDomain;
