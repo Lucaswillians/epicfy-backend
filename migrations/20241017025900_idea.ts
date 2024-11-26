@@ -1,7 +1,7 @@
 import type { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable('idea', table => {
+  return knex.schema.createTableIfNotExists('idea', table => {
     table.increments('id').primary().unique().comment('Identificador único da ideia');
     table.string('title').notNullable().comment('Título da ideia');
     table.string('description').notNullable().comment('Descrição da ideia');
