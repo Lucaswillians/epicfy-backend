@@ -9,6 +9,10 @@
     "rootDirs": [
       "."
     ],
+      "baseUrl": "./",
+    "paths": {
+      "@domain/*": ["src/domain/*"]
+    }
   },
   "include": [
     "**/*.ts",
